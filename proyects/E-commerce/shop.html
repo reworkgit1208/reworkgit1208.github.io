@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop | CoolStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #6c63ff;
+        --secondary-color: #4d44db;
+        --dark-color: #2a2a2a;
+        --light-color: #f8f9fa;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      .navbar {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 4rem 0;
+        color: white;
+      }
+      
+      .card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      .product-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+      
+      .product-card:hover .card-img-top {
+        transform: scale(1.05);
+      }
+      
+      .badge {
+        font-weight: 500;
+        padding: 5px 10px;
+      }
+      
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+      
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+      }
+      
+      .form-range::-webkit-slider-thumb {
+        background: var(--primary-color);
+      }
+      
+      .form-range::-moz-range-thumb {
+        background: var(--primary-color);
+      }
+      
+      .form-range::-ms-thumb {
+        background: var(--primary-color);
+      }
+      
+      .filter-card {
+        position: sticky;
+        top: 20px;
+      }
+      
+      .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+      
+      .pagination .page-link {
+        color: var(--primary-color);
+      }
+      
+      .newsletter-section {
+        background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+      }
+      
+      footer {
+        background-color: var(--dark-color);
+      }
+      
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+      }
+      
+      .social-links a:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-3px);
+      }
+      
+      .breadcrumb-item a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+      }
+      
+      .breadcrumb-item.active {
+        color: white;
+      }
+      
+      .breadcrumb-item+.breadcrumb-item::before {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      
+      /* Loading animation */
+      @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+      }
+      
+      .loading {
+        animation: pulse 1.5s infinite;
+      }
+      
+      /* Quick view modal */
+      .quick-view-modal .modal-content {
+        border-radius: 15px;
+        overflow: hidden;
+      }
+      
+      /* Color swatches */
+      .color-swatch {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      
+      .color-swatch:hover {
+        transform: scale(1.1);
+      }
+      
+      .color-swatch.active {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 2px var(--primary-color);
+      }
+      
+      /* Size selector */
+      .size-selector {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .size-option {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.2s;
+      }
+      
+      .size-option:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      
+      .size-option.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <h1>E-commerce</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="shop.html">Shop</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                Categories
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Men's Fashion</a></li>
+                <li><a class="dropdown-item" href="#">Women's Fashion</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Electronics</a></li>
+                <li><a class="dropdown-item" href="#">Home & Living</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+          <div class="d-flex align-items-center">
+            <form class="d-flex me-3">
+              <div class="input-group">
+                <input class="form-control" type="search" placeholder="Search products..." id="searchInput">
+                <button class="btn btn-outline-light" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </form>
+            <div class="dropdown me-3">
+              <a href="#" class="btn btn-outline-light position-relative dropdown-toggle" id="cartDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCounter" class="position-absolute top-0 start-100 translate-middle badge bg-danger">3</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end p-3" style="width: 300px;">
+                <h6 class="dropdown-header">Your Cart (3)</h6>
+                <div class="dropdown-item d-flex py-2">
+                  <img src="https://via.placeholder.com/50" class="rounded me-2" width="50" height="50">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Wireless Headphones</h6>
+                    <small class="text-muted">1 x $99.99</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="dropdown-item d-flex py-2">
+                  <img src="https://via.placeholder.com/50" class="rounded me-2" width="50" height="50">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Running Shoes</h6>
+                    <small class="text-muted">1 x $129.99</small>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
+                </div>
+                <hr class="dropdown-divider">
+                <div class="d-flex justify-content-between px-3 mb-2">
+                  <strong>Total:</strong>
+                  <strong>$229.98</strong>
+                </div>
+                <div class="d-grid gap-2">
+                  <a href="cart.html" class="btn btn-primary">View Cart</a>
+                  <a href="checkout.html" class="btn btn-outline-primary">Checkout</a>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown">
+              <a href="#" class="btn btn-outline-light dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-user"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="account.html"><i class="fas fa-user-circle me-2"></i> My Account</a></li>
+                <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box-open me-2"></i> My Orders</a></li>
+                <li><a class="dropdown-item" href="wishlist.html"><i class="fas fa-heart me-2"></i> Wishlist</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="container text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold mb-3">Discover Amazing Products</h1>
+        <p class="lead mb-4">Shop the latest trends in fashion, electronics, and more</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Shop</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <!-- Sidebar Filters -->
+          <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm filter-card">
+              <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Filters</h5>
+              </div>
+              <div class="card-body">
+                <!-- Search -->
+                <div class="mb-4">
+                  <h6 class="mb-3"><i class="fas fa-search me-2"></i>Search</h6>
+                  <input type="text" class="form-control" id="searchFilter" placeholder="Product name...">
+                </div>
+                
+                <!-- Categories -->
+                <div class="mb-4">
+                  <h6 class="mb-3"><i class="fas fa-list me-2"></i>Categories</h6>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input category-filter" type="checkbox" value="men" id="cat-men" checked>
+                    <label class="form-check-label" for="cat-men">Men's Fashion</label>
+                    <span class="badge bg-light text-dark float-end">8</span>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input category-filter" type="checkbox" value="women" id="cat-women" checked>
+                    <label class="form-check-label" for="cat-women">Women's Fashion</label>
+                    <span class="badge bg-light text-dark float-end">7</span>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input category-filter" type="checkbox" value="electronics" id="cat-electronics" checked>
+                    <label class="form-check-label" for="cat-electronics">Electronics</label>
+                    <span class="badge bg-light text-dark float-end">5</span>
+                  </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="mb-4">
+                  <h6 class="mb-3"><i class="fas fa-tags me-2"></i>Price Range</h6>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span id="priceMin">$0</span>
+                    <span id="priceMax">$500</span>
+                  </div>
+                  <input type="range" class="form-range" min="0" max="500" value="500" id="priceRange">
+                </div>
+
+                <!-- Ratings -->
+                <div class="mb-4">
+                  <h6 class="mb-3"><i class="fas fa-star me-2"></i>Rating</h6>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input rating-filter" type="checkbox" value="5" id="rating-5">
+                    <label class="form-check-label" for="rating-5">
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <span class="text-muted ms-1">(23)</span>
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input rating-filter" type="checkbox" value="4" id="rating-4">
+                    <label class="form-check-label" for="rating-4">
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="far fa-star text-warning"></i> & Up
+                      <span class="text-muted ms-1">(42)</span>
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input rating-filter" type="checkbox" value="3" id="rating-3">
+                    <label class="form-check-label" for="rating-3">
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="far fa-star text-warning"></i>
+                      <i class="far fa-star text-warning"></i> & Up
+                      <span class="text-muted ms-1">(15)</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <!-- Availability -->
+                <div class="mb-4">
+                  <h6 class="mb-3"><i class="fas fa-box-open me-2"></i>Availability</h6>
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="inStockFilter" checked>
+                    <label class="form-check-label" for="inStockFilter">In Stock Only</label>
+                  </div>
+                </div>
+
+                <button class="btn btn-outline-primary w-100" id="resetFilters">
+                  <i class="fas fa-sync-alt me-2"></i>Reset Filters
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex align-items-center">
+                <span id="productCount" class="fw-bold me-2">20</span> 
+                <span class="text-muted">Products Found</span>
+                <span class="badge bg-light text-dark ms-3 d-none" id="filterBadge">
+                  <span id="activeFilterCount">0</span> Active Filters 
+                  <button class="btn btn-sm btn-link p-0 ms-2" id="clearFiltersBtn">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="me-2 text-muted">Sort by:</span>
+                <select class="form-select" id="sortSelect" style="width: 180px;">
+                  <option value="featured">Featured</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Top Rated</option>
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="bestselling">Bestselling</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="row g-4 d-none" id="loadingState">
+              <div class="col-md-4 col-6">
+                <div class="card h-100">
+                  <div class="card-img-top loading" style="height: 200px; background-color: #f5f5f5;"></div>
+                  <div class="card-body">
+                    <div class="loading" style="height: 20px; width: 80%; background-color: #f5f5f5; margin-bottom: 10px;"></div>
+                    <div class="loading" style="height: 20px; width: 60%; background-color: #f5f5f5; margin-bottom: 15px;"></div>
+                    <div class="loading" style="height: 20px; width: 40%; background-color: #f5f5f5;"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Repeat 5 more times -->
+            </div>
+
+            <!-- Product Grid -->
+            <div class="row g-4" id="productGrid">
+              <!-- Products loaded via JavaScript -->
+            </div>
+
+            <!-- No Results -->
+            <div class="text-center py-5 d-none" id="noResults">
+              <img src="https://via.placeholder.com/200x200?text=No+Results" alt="No results" class="mb-4" width="150">
+              <h4 class="mb-3">No products found</h4>
+              <p class="text-muted mb-4">Try adjusting your filters or search term</p>
+              <button class="btn btn-primary" id="resetFiltersBtn">
+                <i class="fas fa-sync-alt me-2"></i>Reset All Filters
+              </button>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="mt-5" id="paginationContainer">
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Brands -->
+    <section class="py-4 bg-light">
+      <div class="container">
+        <div class="text-center mb-4">
+          <h5 class="text-muted">SHOP BY BRAND</h5>
+        </div>
+        <div class="row g-3 justify-content-center">
+          <div class="col-auto">
+            <a href="#" class="d-block p-3 bg-white rounded-3 shadow-sm text-center">
+              <img src="images/png-transparent-nike-logo-movement-brands-black-removebg-preview.png" alt="Nike" height="50">
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="d-block p-3 bg-white rounded-3 shadow-sm text-center">
+              <img src="images/adidas-black-logo-701751694777212bstvn6c2g9-removebg-preview.png" alt="Adidas" height="50">
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="d-block p-3 bg-white rounded-3 shadow-sm text-center">
+              <img src="images/385d8697caa605fa7ea766753b94729c-removebg-preview.png" alt="Apple" height="50">
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="d-block p-3 bg-white rounded-3 shadow-sm text-center">
+              <img src="images/samsung-logo-preview.png" alt="Samsung" height="50">
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="d-block p-3 bg-white rounded-3 shadow-sm text-center">
+              <img src="images/png-transparent-logo-mobile-world-congress-sony-xperia-xz2-sony-archives-sony-television-text-logo-removebg-preview.png" alt="Sony" height="50">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section py-5">
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h2 class="mb-4">Join Our Newsletter</h2>
+            <p class="mb-4">Subscribe to get updates on new products, exclusive offers and more.</p>
+            <form class="row g-2 justify-content-center">
+              <div class="col-md-8 col-10">
+                <div class="input-group">
+                  <input type="email" class="form-control" placeholder="Your email address">
+                  <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+              </div>
+            </form>
+            <div class="form-check mt-3 justify-content-center">
+              <input class="form-check-input" type="checkbox" id="newsletterConsent" checked>
+              <label class="form-check-label small text-muted" for="newsletterConsent">
+                I agree to receive marketing emails from CoolStore
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="quickViewTitle">Product Quick View</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner rounded-3">
+                    <!-- Carousel items will be added dynamically -->
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <div class="row g-2 mt-2" id="productThumbnails">
+                  <!-- Thumbnails will be added dynamically -->
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h3 id="quickViewProductName">Product Name</h3>
+                <div class="mb-3">
+                  <span class="text-warning">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </span>
+                  <span class="ms-1 text-muted" id="quickViewReviews">(24 reviews)</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <h4 class="text-primary mb-0" id="quickViewPrice">$99.99</h4>
+                  <small class="text-muted text-decoration-line-through ms-2" id="quickViewOriginalPrice">$129.99</small>
+                  <span class="badge bg-danger ms-2" id="quickViewDiscount">25% OFF</span>
+                </div>
+                <p class="mb-4" id="quickViewDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                
+                <div class="mb-4">
+                  <h6 class="mb-2">Color:</h6>
+                  <div class="color-swatches">
+                    <span class="color-swatch active" style="background-color: #6c63ff;" data-color="Purple"></span>
+                    <span class="color-swatch" style="background-color: #2a2a2a;" data-color="Black"></span>
+                    <span class="color-swatch" style="background-color: #dc3545;" data-color="Red"></span>
+                    <span class="color-swatch" style="background-color: #28a745;" data-color="Green"></span>
+                  </div>
+                </div>
+                
+                <div class="mb-4">
+                  <h6 class="mb-2">Size:</h6>
+                  <div class="size-selector">
+                    <span class="size-option">XS</span>
+                    <span class="size-option active">S</span>
+                    <span class="size-option">M</span>
+                    <span class="size-option">L</span>
+                    <span class="size-option">XL</span>
+                  </div>
+                </div>
+                
+                <div class="mb-4">
+                  <h6 class="mb-2">Quantity:</h6>
+                  <div class="input-group" style="width: 120px;">
+                    <button class="btn btn-outline-secondary" type="button" id="decrementQty">-</button>
+                    <input type="text" class="form-control text-center" value="1" id="productQty">
+                    <button class="btn btn-outline-secondary" type="button" id="incrementQty">+</button>
+                  </div>
+                </div>
+                
+                <div class="d-grid gap-2 mb-3">
+                  <button class="btn btn-primary">
+                    <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                  </button>
+                  <button class="btn btn-outline-primary">
+                    <i class="fas fa-heart me-2"></i>Add to Wishlist
+                  </button>
+                </div>
+                
+                <div class="d-flex small text-muted">
+                  <div class="me-3">
+                    <i class="fas fa-truck me-1"></i> Free shipping
+                  </div>
+                  <div class="me-3">
+                    <i class="fas fa-undo me-1"></i> 30-day returns
+                  </div>
+                  <div>
+                    <i class="fas fa-shield-alt me-1"></i> Secure payment
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 mb-4">
+            <img src="https://via.placeholder.com/120x40?text=CoolStore&color=ffffff" alt="CoolStore" width="120" class="mb-3">
+            <p class="text-muted">Premium e-commerce solution for modern shoppers with the best products and customer service.</p>
+            <div class="social-links mt-4">
+              <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-pinterest"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="mb-4">Shop</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#" class="text-muted">Men's Fashion</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Women's Fashion</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Electronics</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Accessories</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Sale</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-4 mb-4">
+            <h5 class="mb-4">Help</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#" class="text-muted">Customer Service</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Track Order</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Returns & Exchanges</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">Shipping Info</a></li>
+              <li class="mb-2"><a href="#" class="text-muted">FAQs</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-4 mb-4">
+            <h5 class="mb-4">Contact Us</h5>
+            <ul class="list-unstyled text-muted">
+              <li class="mb-2">
+                <i class="fas fa-map-marker-alt me-2"></i> 123 Fashion St, New York, NY 10001
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-phone me-2"></i> (123) 456-7890
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-envelope me-2"></i> info@coolstore.com
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-clock me-2"></i> Mon-Fri: 9AM - 6PM
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-secondary">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <p class="mb-0 text-muted">&copy; 2023 CoolStore. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a href="#" class="text-muted me-3">Privacy Policy</a>
+            <a href="#" class="text-muted me-3">Terms of Service</a>
+            <a href="#" class="text-muted">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS animation
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+
+      // Sample product data (20 products)
+      const products = [
+        {
+          id: 1,
+          name: "Wireless Bluetooth Headphones",
+          category: "electronics",
+          price: 99.99,
+          originalPrice: 129.99,
+          rating: 4.5,
+          reviews: 24,
+          inStock: true,
+          isNew: true,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-06-15",
+          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1545127398-5aae47194b22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "Premium wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and travelers.",
+          colors: ["Black", "White", "Blue"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 2,
+          name: "Men's Running Shoes",
+          category: "men",
+          price: 129.99,
+          originalPrice: 149.99,
+          rating: 4.7,
+          reviews: 42,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-05-20",
+          image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "High-performance running shoes with responsive cushioning and breathable mesh upper for maximum comfort.",
+          colors: ["Black", "White", "Red"],
+          sizes: ["8", "9", "10", "11", "12"]
+        },
+        {
+          id: 3,
+          name: "Women's Summer Dress",
+          category: "women",
+          price: 59.99,
+          originalPrice: 79.99,
+          rating: 4.3,
+          reviews: 18,
+          inStock: true,
+          isNew: true,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-07-01",
+          image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80",
+            "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80"
+          ],
+          description: "Lightweight and breathable summer dress with floral pattern. Perfect for warm weather and casual outings.",
+          colors: ["Blue", "Pink", "Yellow"],
+          sizes: ["S", "M", "L", "XL"]
+        },
+        {
+          id: 4,
+          name: "Smart Watch Pro",
+          category: "electronics",
+          price: 199.99,
+          originalPrice: 249.99,
+          rating: 4.8,
+          reviews: 56,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-04-10",
+          image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1999&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1999&q=80",
+            "https://images.unsplash.com/photo-1558126319-c9feecbf57ee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Advanced smartwatch with health monitoring, GPS, and 7-day battery life. Stay connected and track your fitness goals.",
+          colors: ["Black", "Silver", "Gold"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 5,
+          name: "Men's Casual Shirt",
+          category: "men",
+          price: 39.99,
+          originalPrice: 49.99,
+          rating: 4.2,
+          reviews: 15,
+          inStock: true,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-06-05",
+          image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1925&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1925&q=80",
+            "https://images.unsplash.com/photo-1620012253295-c15cc3b65e8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "Comfortable casual shirt made from breathable cotton fabric. Perfect for everyday wear.",
+          colors: ["Blue", "White", "Gray"],
+          sizes: ["S", "M", "L", "XL"]
+        },
+        {
+          id: 6,
+          name: "Wireless Earbuds",
+          category: "electronics",
+          price: 79.99,
+          originalPrice: 99.99,
+          rating: 4.4,
+          reviews: 32,
+          inStock: true,
+          isNew: true,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-07-10",
+          image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1932&q=80",
+            "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "True wireless earbuds with crystal clear sound and 24-hour battery life. Perfect for workouts and commuting.",
+          colors: ["Black", "White"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 7,
+          name: "Women's Handbag",
+          category: "women",
+          price: 89.99,
+          originalPrice: 119.99,
+          rating: 4.6,
+          reviews: 28,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-05-15",
+          image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2078&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2078&q=80",
+            "https://images.unsplash.com/photo-1554342872-034a06541bad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Stylish and spacious handbag with multiple compartments. Made from high-quality vegan leather.",
+          colors: ["Black", "Brown", "Beige"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 8,
+          name: "Men's Slim Fit Jeans",
+          category: "men",
+          price: 49.99,
+          originalPrice: 69.99,
+          rating: 4.1,
+          reviews: 19,
+          inStock: true,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-06-20",
+          image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+            "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2026&q=80"
+          ],
+          description: "Comfortable slim fit jeans made from stretch denim for maximum mobility and style.",
+          colors: ["Blue", "Black"],
+          sizes: ["30", "32", "34", "36"]
+        },
+        {
+          id: 9,
+          name: "Tablet 10.5\"",
+          category: "electronics",
+          price: 299.99,
+          originalPrice: 349.99,
+          rating: 4.5,
+          reviews: 37,
+          inStock: false,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: false,
+          dateAdded: "2023-03-15",
+          image: "https://images.unsplash.com/photo-1527698266440-12104e498b76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1527698266440-12104e498b76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1546054454-aa26e2b734c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "Powerful 10.5\" tablet with high-resolution display and long battery life. Perfect for work and entertainment.",
+          colors: ["Gray", "Silver"],
+          sizes: ["64GB", "128GB"]
+        },
+        {
+          id: 10,
+          name: "Women's Sneakers",
+          category: "women",
+          price: 79.99,
+          originalPrice: 99.99,
+          rating: 4.4,
+          reviews: 26,
+          inStock: true,
+          isNew: true,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-07-05",
+          image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Comfortable and stylish sneakers for women with cushioned soles for all-day comfort.",
+          colors: ["White", "Pink", "Black"],
+          sizes: ["6", "7", "8", "9"]
+        },
+        {
+          id: 11,
+          name: "Men's Leather Wallet",
+          category: "men",
+          price: 34.99,
+          originalPrice: 49.99,
+          rating: 4.0,
+          reviews: 12,
+          inStock: true,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-06-10",
+          image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+            "https://images.unsplash.com/photo-1591561954555-607968c989ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "Genuine leather wallet with multiple card slots and RFID protection. Slim design fits comfortably in your pocket.",
+          colors: ["Brown", "Black"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 12,
+          name: "Bluetooth Speaker",
+          category: "electronics",
+          price: 59.99,
+          originalPrice: 79.99,
+          rating: 4.3,
+          reviews: 21,
+          inStock: true,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-05-25",
+          image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80",
+            "https://images.unsplash.com/photo-1545454675-3531b543be5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Portable Bluetooth speaker with 12-hour battery life and waterproof design. Perfect for outdoor adventures.",
+          colors: ["Black", "Blue", "Red"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 13,
+          name: "Women's Yoga Pants",
+          category: "women",
+          price: 44.99,
+          originalPrice: 59.99,
+          rating: 4.7,
+          reviews: 35,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-04-30",
+          image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1556812191-381c7e7d96d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "High-waisted yoga pants with four-way stretch fabric for maximum comfort during workouts.",
+          colors: ["Black", "Gray", "Purple"],
+          sizes: ["S", "M", "L", "XL"]
+        },
+        {
+          id: 14,
+          name: "Men's Winter Jacket",
+          category: "men",
+          price: 149.99,
+          originalPrice: 199.99,
+          rating: 4.6,
+          reviews: 29,
+          inStock: false,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: true,
+          dateAdded: "2023-01-15",
+          image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80",
+            "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+          ],
+          description: "Warm and stylish winter jacket with water-resistant outer shell and insulated lining.",
+          colors: ["Black", "Navy", "Gray"],
+          sizes: ["S", "M", "L", "XL"]
+        },
+        {
+          id: 15,
+          name: "Smartphone 128GB",
+          category: "electronics",
+          price: 599.99,
+          originalPrice: 699.99,
+          rating: 4.9,
+          reviews: 78,
+          inStock: true,
+          isNew: true,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-07-15",
+          image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80",
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+          ],
+          description: "Latest smartphone with advanced camera system, powerful processor and all-day battery life.",
+          colors: ["Black", "White", "Blue"],
+          sizes: ["128GB", "256GB"]
+        },
+        {
+          id: 16,
+          name: "Women's Sunglasses",
+          category: "women",
+          price: 39.99,
+          originalPrice: 49.99,
+          rating: 4.2,
+          reviews: 16,
+          inStock: true,
+          isNew: false,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-06-25",
+          image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80",
+            "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Fashionable sunglasses with UV400 protection and lightweight frame for all-day comfort.",
+          colors: ["Black", "Tortoise", "Gold"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 17,
+          name: "Men's Sport Watch",
+          category: "men",
+          price: 129.99,
+          originalPrice: 159.99,
+          rating: 4.5,
+          reviews: 31,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: false,
+          dateAdded: "2023-05-10",
+          image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80",
+            "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          ],
+          description: "Durable sport watch with multiple training modes, heart rate monitor and 2-week battery life.",
+          colors: ["Black", "Blue", "Green"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 18,
+          name: "Women's Leather Handbag",
+          category: "women",
+          price: 119.99,
+          originalPrice: 149.99,
+          rating: 4.7,
+          reviews: 43,
+          inStock: true,
+          isNew: false,
+          isFeatured: true,
+          isBestseller: true,
+          dateAdded: "2023-04-05",
+          image: "https://images.unsplash.com/photo-1554342872-034a06541bad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1554342872-034a06541bad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2078&q=80"
+          ],
+          description: "Genuine leather handbag with multiple compartments and adjustable shoulder strap. Timeless design.",
+          colors: ["Brown", "Black"],
+          sizes: ["One Size"]
+        },
+        {
+          id: 19,
+          name: "Men's Casual Sneakers",
+          category: "men",
+          price: 69.99,
+          originalPrice: 89.99,
+          rating: 4.3,
+          reviews: 22,
+          inStock: true,
+          isNew: true,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-07-12",
+          image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80"
+          ],
+          description: "Versatile casual sneakers with comfortable cushioning and breathable upper. Perfect for everyday wear.",
+          colors: ["White", "Black", "Blue"],
+          sizes: ["8", "9", "10", "11", "12"]
+        },
+        {
+          id: 20,
+          name: "Women's Denim Jacket",
+          category: "women",
+          price: 59.99,
+          originalPrice: 79.99,
+          rating: 4.4,
+          reviews: 27,
+          inStock: true,
+          isNew: true,
+          isFeatured: false,
+          isBestseller: false,
+          dateAdded: "2023-07-08",
+          image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80",
+          images: [
+            "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80",
+            "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+          ],
+          description: "Classic denim jacket with a modern fit. Features multiple pockets and button-front closure.",
+          colors: ["Blue", "Black"],
+          sizes: ["S", "M", "L"]
+        }
+      ];
+
+      // Product Grid Rendering
+      document.addEventListener("DOMContentLoaded", () => {
+        const productGrid = document.getElementById("productGrid");
+        const priceRange = document.getElementById("priceRange");
+        const priceMax = document.getElementById("priceMax");
+        const categoryFilters = document.querySelectorAll(".category-filter");
+        const ratingFilters = document.querySelectorAll(".rating-filter");
+        const sortSelect = document.getElementById("sortSelect");
+        const searchInput = document.getElementById("searchFilter");
+        const resetFilters = document.getElementById("resetFilters");
+        const productCount = document.getElementById("productCount");
+        const inStockFilter = document.getElementById("inStockFilter");
+        const filterBadge = document.getElementById("filterBadge");
+        const activeFilterCount = document.getElementById("activeFilterCount");
+        const clearFiltersBtn = document.getElementById("clearFiltersBtn");
+        const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+        const noResults = document.getElementById("noResults");
+        const loadingState = document.getElementById("loadingState");
+        const quickViewModal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+        
+        // Display products
+        function renderProducts(productsToShow) {
+          productGrid.innerHTML = "";
+          productCount.textContent = productsToShow.length;
+          
+          // Update filter badge
+          const activeFilters = getActiveFilterCount();
+          if (activeFilters > 0) {
+            filterBadge.classList.remove("d-none");
+            activeFilterCount.textContent = activeFilters;
+          } else {
+            filterBadge.classList.add("d-none");
+          }
+          
+          if (productsToShow.length === 0) {
+            noResults.classList.remove("d-none");
+            productGrid.classList.add("d-none");
+            return;
+          } else {
+            noResults.classList.add("d-none");
+            productGrid.classList.remove("d-none");
+          }
+          
+          productsToShow.forEach((product) => {
+            const discount = product.originalPrice 
+              ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+              : 0;
+            
+            productGrid.innerHTML += `
+              <div class="col-md-4 col-6">
+                <div class="card h-100 product-card">
+                  ${product.isNew ? '<div class="badge bg-primary position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>' : ''}
+                  ${discount > 0 ? '<div class="badge bg-danger position-absolute" style="top: 0.5rem; left: 0.5rem">-' + discount + '%</div>' : ''}
+                  ${!product.inStock ? '<div class="badge bg-secondary position-absolute" style="top: 2.5rem; left: 0.5rem">Out of Stock</div>' : ''}
+                  
+                  <img src="${product.image}" class="card-img-top" alt="${product.name}" 
+                       data-bs-toggle="modal" data-bs-target="#quickViewModal" 
+                       onclick="showQuickView(${product.id})">
+                  
+                  <div class="card-body">
+                    <div class="mb-2">
+                      <span class="text-muted text-capitalize">${product.category}</span>
+                    </div>
+                    <h5 class="card-title">${product.name}</h5>
+                    <div class="mb-2">
+                      ${Array.from({ length: 5 }, (_, i) =>
+                        `<i class="fas fa-star${i < Math.floor(product.rating) ? "" : (i === Math.floor(product.rating) && product.rating % 1 >= 0.5 ? "-half-alt" : "-empty")} text-warning"></i>`
+                      ).join("")}
+                      <span class="ms-1">(${product.reviews})</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="text-primary fw-bold">$${product.price.toFixed(2)}</span>
+                        ${product.originalPrice 
+                          ? `<small class="text-muted text-decoration-line-through ms-2">$${product.originalPrice.toFixed(2)}</small>`
+                          : ""}
+                      </div>
+                      <button class="btn btn-sm btn-primary add-to-cart"
+                              data-id="${product.id}"
+                              data-name="${product.name}"
+                              data-price="${product.price}"
+                              data-image="${product.image}"
+                              ${!product.inStock ? 'disabled' : ''}>
+                        <i class="fas fa-cart-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          
+          // Add event listeners to "Add to Cart" buttons
+          document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', addToCart);
+          });
+        }
+        
+        // Count active filters
+        function getActiveFilterCount() {
+          let count = 0;
+          
+          // Price filter
+          if (parseInt(priceRange.value) < 500) count++;
+          
+          // Category filters
+          const selectedCategories = Array.from(document.querySelectorAll(".category-filter:not(:checked)")).length;
+          if (selectedCategories > 0) count++;
+          
+          // Rating filters
+          const selectedRatings = Array.from(document.querySelectorAll(".rating-filter:checked")).length;
+          if (selectedRatings > 0) count++;
+          
+          // Search filter
+          if (searchInput.value.trim() !== "") count++;
+          
+          // In stock filter
+          if (inStockFilter.checked) count++;
+          
+          return count;
+        }
+        
+        // Filter products
+        function filterProducts() {
+          // Show loading state
+          loadingState.classList.remove("d-none");
+          productGrid.classList.add("d-none");
+          
+          // Simulate loading delay
+          setTimeout(() => {
+            const maxPrice = parseInt(priceRange.value);
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedCategories = Array.from(
+              document.querySelectorAll(".category-filter:checked")
+            ).map((el) => el.value);
+            const selectedRatings = Array.from(
+              document.querySelectorAll(".rating-filter:checked")
+            ).map((el) => parseInt(el.value));
+            const inStockOnly = inStockFilter.checked;
+            
+            let filteredProducts = products.filter((product) => {
+              const matchesPrice = product.price <= maxPrice;
+              const matchesSearch = searchTerm === "" || 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm);
+              const matchesCategory = selectedCategories.length === 0 ||
+                selectedCategories.includes(product.category.toLowerCase());
+              const matchesRating = selectedRatings.length === 0 ||
+                selectedRatings.some((rating) => product.rating >= rating);
+              const matchesStock = !inStockOnly || product.inStock;
+              
+              return (
+                matchesPrice && matchesSearch && matchesCategory && matchesRating && matchesStock
+              );
+            });
+            
+            // Sorting
+            const sortValue = sortSelect.value;
+            switch (sortValue) {
+              case "price-low":
+                filteredProducts.sort((a, b) => a.price - b.price);
+                break;
+              case "price-high":
+                filteredProducts.sort((a, b) => b.price - a.price);
+                break;
+              case "rating":
+                filteredProducts.sort((a, b) => b.rating - a.rating);
+                break;
+              case "newest":
+                filteredProducts.sort(
+                  (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
+                );
+                break;
+              case "bestselling":
+                filteredProducts.sort((a, b) => b.reviews - a.reviews);
+                break;
+              default:
+                filteredProducts.sort((a, b) => {
+                  if (a.isFeatured && !b.isFeatured) return -1;
+                  if (!a.isFeatured && b.isFeatured) return 1;
+                  if (a.isBestseller && !b.isBestseller) return -1;
+                  if (!a.isBestseller && b.isBestseller) return 1;
+                  return 0;
+                });
+            }
+            
+            renderProducts(filteredProducts);
+            loadingState.classList.add("d-none");
+          }, 500); // Simulate 500ms loading delay
+        }
+        
+        // Add to cart function
+        function addToCart(event) {
+          const button = event.target.closest('.add-to-cart');
+          const productId = button.dataset.id;
+          const productName = button.dataset.name;
+          const productPrice = parseFloat(button.dataset.price);
+          const productImage = button.dataset.image;
+          
+          // In a real app, you would add to cart storage or send to server
+          console.log(`Added to cart: ${productName} - $${productPrice}`);
+          
+          // Update cart counter
+          const cartCounter = document.getElementById('cartCounter');
+          let currentCount = parseInt(cartCounter.textContent);
+          cartCounter.textContent = currentCount + 1;
+          
+          // Show feedback to user
+          const originalText = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-check"></i> Added';
+          button.classList.add('btn-success');
+          button.classList.remove('btn-primary');
+          
+          setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-primary');
+          }, 2000);
+        }
+        
+        // Quick view function
+        window.showQuickView = function(productId) {
+          const product = products.find(p => p.id === productId);
+          if (!product) return;
+          
+          const discount = product.originalPrice 
+            ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+            : 0;
+          
+          // Set product details
+          document.getElementById('quickViewTitle').textContent = product.name;
+          document.getElementById('quickViewProductName').textContent = product.name;
+          document.getElementById('quickViewPrice').textContent = `$${product.price.toFixed(2)}`;
+          document.getElementById('quickViewDescription').textContent = product.description;
+          document.getElementById('quickViewReviews').textContent = `(${product.reviews} reviews)`;
+          
+          // Set price and discount
+          if (product.originalPrice) {
+            document.getElementById('quickViewOriginalPrice').textContent = `$${product.originalPrice.toFixed(2)}`;
+            document.getElementById('quickViewOriginalPrice').classList.remove('d-none');
+            document.getElementById('quickViewDiscount').textContent = `${discount}% OFF`;
+            document.getElementById('quickViewDiscount').classList.remove('d-none');
+          } else {
+            document.getElementById('quickViewOriginalPrice').classList.add('d-none');
+            document.getElementById('quickViewDiscount').classList.add('d-none');
+          }
+          
+          // Set rating stars
+          const ratingContainer = document.querySelector('#quickViewModal .mb-3 .text-warning');
+          ratingContainer.innerHTML = Array.from({ length: 5 }, (_, i) =>
+            `<i class="fas fa-star${i < Math.floor(product.rating) ? "" : (i === Math.floor(product.rating) && product.rating % 1 >= 0.5 ? "-half-alt" : "-empty")}"></i>`
+          ).join("");
+          
+          // Set product images carousel
+          const carouselInner = document.querySelector('#productCarousel .carousel-inner');
+          carouselInner.innerHTML = '';
+          
+          product.images.forEach((img, index) => {
+            const item = document.createElement('div');
+            item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+            item.innerHTML = `<img src="${img}" class="d-block w-100 rounded" alt="${product.name}">`;
+            carouselInner.appendChild(item);
+          });
+          
+          // Set thumbnails
+          const thumbnailsContainer = document.getElementById('productThumbnails');
+          thumbnailsContainer.innerHTML = '';
+          
+          product.images.forEach((img, index) => {
+            const col = document.createElement('div');
+            col.className = 'col-3';
+            col.innerHTML = `
+              <img src="${img}" class="img-fluid rounded cursor-pointer" 
+                   data-bs-target="#productCarousel" data-bs-slide-to="${index}" 
+                   alt="${product.name}" style="height: 60px; object-fit: cover;">
+            `;
+            thumbnailsContainer.appendChild(col);
+          });
+          
+          // Set color options
+          const colorSwatches = document.querySelector('.color-swatches');
+          colorSwatches.innerHTML = '';
+          
+          const colorMap = {
+            "Black": "#2a2a2a",
+            "White": "#ffffff",
+            "Blue": "#0d6efd",
+            "Red": "#dc3545",
+            "Green": "#28a745",
+            "Yellow": "#ffc107",
+            "Purple": "#6c63ff",
+            "Pink": "#fd7e14",
+            "Gray": "#6c757d",
+            "Brown": "#795548",
+            "Gold": "#ffd700",
+            "Silver": "#c0c0c0",
+            "Navy": "#001f3f",
+            "Beige": "#f5f5dc",
+            "Tortoise": "#8b4513"
+          };
+          
+          product.colors.forEach((color, index) => {
+            const swatch = document.createElement('span');
+            swatch.className = `color-swatch ${index === 0 ? 'active' : ''}`;
+            swatch.style.backgroundColor = colorMap[color] || '#6c63ff';
+            swatch.dataset.color = color;
+            swatch.title = color;
+            swatch.addEventListener('click', function() {
+              document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+              this.classList.add('active');
+            });
+            colorSwatches.appendChild(swatch);
+          });
+          
+          // Set size options
+          const sizeSelector = document.querySelector('.size-selector');
+          sizeSelector.innerHTML = '';
+          
+          product.sizes.forEach((size, index) => {
+            const option = document.createElement('span');
+            option.className = `size-option ${index === 0 ? 'active' : ''}`;
+            option.textContent = size;
+            option.addEventListener('click', function() {
+              document.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+              this.classList.add('active');
+            });
+            sizeSelector.appendChild(option);
+          });
+          
+          // Show modal
+          quickViewModal.show();
+        };
+        
+        // Quantity controls
+        document.getElementById('incrementQty').addEventListener('click', function() {
+          const qtyInput = document.getElementById('productQty');
+          qtyInput.value = parseInt(qtyInput.value) + 1;
+        });
+        
+        document.getElementById('decrementQty').addEventListener('click', function() {
+          const qtyInput = document.getElementById('productQty');
+          if (parseInt(qtyInput.value) > 1) {
+            qtyInput.value = parseInt(qtyInput.value) - 1;
+          }
+        });
+        
+        // Event Listeners
+        priceRange.addEventListener("input", () => {
+          priceMax.textContent = `$${priceRange.value}`;
+          filterProducts();
+        });
+        
+        categoryFilters.forEach((filter) => {
+          filter.addEventListener("change", filterProducts);
+        });
+        
+        ratingFilters.forEach((filter) => {
+          filter.addEventListener("change", filterProducts);
+        });
+        
+        sortSelect.addEventListener("change", filterProducts);
+        searchInput.addEventListener("input", filterProducts);
+        inStockFilter.addEventListener("change", filterProducts);
+        
+        resetFilters.addEventListener("click", () => {
+          priceRange.value = 500;
+          priceMax.textContent = "$500";
+          categoryFilters.forEach((filter) => (filter.checked = true));
+          ratingFilters.forEach((filter) => (filter.checked = false));
+          sortSelect.value = "featured";
+          searchInput.value = "";
+          inStockFilter.checked = true;
+          filterProducts();
+        });
+        
+        clearFiltersBtn.addEventListener("click", () => {
+          priceRange.value = 500;
+          priceMax.textContent = "$500";
+          categoryFilters.forEach((filter) => (filter.checked = true));
+          ratingFilters.forEach((filter) => (filter.checked = false));
+          sortSelect.value = "featured";
+          searchInput.value = "";
+          inStockFilter.checked = true;
+          filterProducts();
+        });
+        
+        resetFiltersBtn.addEventListener("click", () => {
+          priceRange.value = 500;
+          priceMax.textContent = "$500";
+          categoryFilters.forEach((filter) => (filter.checked = true));
+          ratingFilters.forEach((filter) => (filter.checked = false));
+          sortSelect.value = "featured";
+          searchInput.value = "";
+          inStockFilter.checked = true;
+          filterProducts();
+        });
+        
+        // Initial render
+        priceMax.textContent = `$${priceRange.value}`;
+        filterProducts();
+      });
+    </script>
+  </body>
+</html>
